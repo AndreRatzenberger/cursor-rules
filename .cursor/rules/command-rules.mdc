@@ -23,6 +23,8 @@ filters:
     pattern: "Eval"
   - type: command
     pattern: "Review"
+  - type: command
+    pattern: "Rule"
 
 actions:
   # Specs Commands
@@ -187,6 +189,52 @@ actions:
       
       The task summary will be saved to `.cursor/output/task_summary_[timestamp].md`
 
+  # Rule Commands
+  - type: react
+    conditions:
+      - pattern: "Rule.create:(.*)"
+    action: |
+      # Create a comprehensive rule from a folder
+      # Pattern will capture the folder path
+      
+      I'll analyze the specified folder and create a standalone rule:
+      
+      1. Extract folder name to use in the rule file name
+      2. Analyze folder contents:
+         - Directory structure and file organization
+         - Code files, their purpose, and relationships
+         - Documentation files (README, comments, docs)
+         - Configuration files and their options
+         - Dependencies and their usage
+         - API structure and usage patterns
+         - Common patterns and best practices
+      
+      3. Create a comprehensive rule file with:
+         - Description and purpose of the library/module
+         - Installation and setup instructions
+         - Core concepts and architecture
+         - API reference with examples
+         - Common usage patterns
+         - Best practices and pitfalls
+         - Configuration options
+         - Integration examples
+         - Troubleshooting guide
+      
+      4. The rule will be saved as `[foldername]-rule.mdc` in the root of the specified folder
+         
+      5. For a library/framework, the rule will include:
+         - Complete API documentation
+         - Function signatures and parameter descriptions
+         - Return value descriptions
+         - Usage examples for each function
+         - Common patterns and anti-patterns
+         - Best practices specific to the library
+         - Integration with other libraries
+      
+      This creates a standalone, self-contained knowledge resource that doesn't require
+      access to the original files once created. The rule will serve as comprehensive 
+      documentation on how to use the folder's contents effectively.
+
   - type: suggest
     message: |
       ### AI Command System
@@ -212,6 +260,9 @@ actions:
 
       **Task Commands**:
       - `Task.summary` - Generate summary of all tasks
+      
+      **Rule Commands**:
+      - `Rule.create:[folder]` - Create a comprehensive rule from a folder's contents
 
       All output will be saved to the `.cursor/output/` directory for reference.
 
@@ -227,8 +278,12 @@ examples:
   - input: |
       Eval.project
     output: "Generating comprehensive project evaluation..."
+    
+  - input: |
+      Rule.create:src/auth
+    output: "Creating comprehensive rule file for authentication module at src/auth/auth-rule.mdc..."
 
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 
