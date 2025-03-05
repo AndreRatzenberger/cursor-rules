@@ -1,0 +1,387 @@
+# FastHTML Framework
+
+Rule for working with the FastHTML framework for creating server-rendered hypermedia applications.
+
+<rule>
+name: fasthtml_framework
+filters:
+  - type: file_change
+    pattern: "**/*.py"
+  - type: command
+    pattern: "fasthtml"
+  - type: file_change
+    pattern: "templates/**/*.html"
+
+actions:
+  - type: suggest
+    message: |
+      ### FastHTML Framework
+
+      I see you're working with FastHTML! I can help with developing and extending your hypermedia applications.
+
+      **Key capabilities I can assist with:**
+      
+      - Creating and configuring FastHTML applications
+      - Setting up routes and views
+      - Building HTML components using Python function calls
+      - Working with forms and data models
+      - Integrating HTMX for interactive applications
+      - Using Surreal and other included libraries
+      - Debugging and optimizing your FastHTML apps
+
+      Let me know what you're trying to accomplish, and I'll provide guidance based on FastHTML's approach to building server-rendered web applications.
+
+metadata:
+  priority: high
+  version: 1.0
+  author: "AI Assistant"
+  description: "Comprehensive guide for working with the FastHTML framework for building server-rendered hypermedia applications"
+  
+# FastHTML: Server-Rendered Hypermedia Applications
+
+## Overview
+
+FastHTML is a Python library that brings together Starlette, Uvicorn, HTMX, and fastcore's `FT` "FastTags" into a unified framework for creating server-rendered hypermedia applications. The `FastHTML` class itself inherits from `Starlette` and adds decorator-based routing with many enhancements, automatic `FT` to HTML rendering, and more.
+
+FastHTML focuses on building modern, interactive web applications using the hypermedia-driven approach rather than single-page applications (SPAs). It uses server-rendered HTML combined with HTMX for interactivity, providing a simpler, more maintainable alternative to complex JavaScript frameworks.
+
+## Key Components
+
+1. **FastHTML Core**  
+   The main class that inherits from Starlette and provides the application foundation.
+
+2. **FastTags (FT)**  
+   A component for creating HTML elements using Python function calls.
+
+3. **HTMX Integration**  
+   Built-in support for HTMX to enable interactive behaviors without complex JavaScript.
+
+4. **Routing System**  
+   Decorator-based routing that connects URLs to Python functions.
+
+5. **Form Handling**  
+   Tools for creating and processing forms with automatic validation.
+
+6. **Database Integration**  
+   Support for SQLite through fastlite and other databases through SQLAlchemy.
+
+7. **CSS Frameworks**  
+   Built-in support for Pico CSS and other frameworks.
+
+## Basic Usage Patterns
+
+### Creating a Minimal Application
+
+```python
+from fasthtml.common import *
+
+app, rt = fast_app()
+
+@rt("/")
+def get():
+    return Titled("FastHTML", P("Let's do this!"))
+
+serve()
+```
+
+In this example:
+- We import common functions and classes with `from fasthtml.common import *`
+- Create a FastHTML app with `fast_app()`
+- Define a route using the `rt()` decorator
+- Return HTML components using Python function calls
+- Run the application with `serve()`
+
+### Routing and HTTP Methods
+
+FastHTML maps function names to HTTP methods:
+
+```python
+@rt("/")  
+def get():
+  return Titled("HTTP GET", P("Handle GET"))
+
+@rt("/")  
+def post():
+  return Titled("HTTP POST", P("Handle POST"))
+```
+
+### Dynamic URLs with Path Parameters
+
+URLs can include variable sections:
+
+```python
+@rt("/{name}/{age}")
+def get(name: str, age: int):
+  return Titled(f"Hello {name.title()}, age {age}")
+```
+
+Type annotations are automatically enforced.
+
+### HTML Components with FastTags
+
+FastHTML uses fastcore's `FT` for creating HTML elements:
+
+```python
+# Create a paragraph element
+P("This is a paragraph")
+
+# Create a div with a class and content
+Div("This is a div", cls="container")
+
+# Create nested elements
+Div(
+    H1("Title"),
+    P("Paragraph 1"),
+    P("Paragraph 2"),
+    cls="content"
+)
+```
+
+### Forms and Data Models
+
+Forms can be created based on dataclasses:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Profile:
+    email: str
+    phone: str
+    age: int
+
+# Create a form based on the dataclass
+profile_form = form(Profile)
+
+# Fill a form with existing data
+filled_form = fill_form(profile_form, profile_instance)
+```
+
+### Database Integration
+
+FastHTML includes fastlite for SQLite integration:
+
+```python
+db = database("profiles.db")
+profiles = db.create(Profile, pk="email")
+
+# Insert a record
+profiles.insert(profile)
+
+# Retrieve a record
+profile = profiles["john@example.com"]
+```
+
+### HTMX Integration
+
+FastHTML works seamlessly with HTMX for creating interactive applications:
+
+```python
+# Add HTMX attributes to elements
+button = Button("Click me", 
+    **htmx(get="/api/data", target="#result", swap="outerHTML")
+)
+
+# Create a div to receive the HTMX response
+result_div = Div(id="result")
+```
+
+## Advanced Features
+
+### Debug Mode
+
+Enable debug mode for better error messages:
+
+```python
+app, rt = fast_app(debug=True)
+```
+
+### Including JavaScript
+
+Add JavaScript using the `Script` function:
+
+```python
+# Include an external script
+Script(src="https://cdn.plot.ly/plotly-2.32.0.min.js")
+
+# Inline JavaScript
+Script("console.log('Hello from FastHTML');")
+```
+
+### Titled Component
+
+The `Titled` component creates a complete HTML page with a title and content:
+
+```python
+Titled("Page Title", 
+    P("This is a paragraph"),
+    Div("This is a div", cls="container")
+)
+```
+
+### Beforeware
+
+FastHTML supports "Beforeware" - functions that run before your route handlers:
+
+```python
+@app.beforeware
+async def authenticate(request):
+    # Authentication logic
+    if not authenticated:
+        return RedirectResponse("/login")
+    return None  # Continue to the handler
+```
+
+### Surreal Integration
+
+FastHTML integrates with Surreal for client-side JavaScript with Locality of Behavior:
+
+```python
+# In HTML templates
+Script("""
+me().addEventListener('click', () => {
+    console.log('Element clicked');
+});
+""")
+```
+
+## Best Practices
+
+1. **Use FastTags for HTML Generation**  
+   Leverage the power of Python function calls to create HTML rather than string templates.
+
+2. **Favor HTMX for Interactivity**  
+   Use HTMX attributes instead of custom JavaScript for common interactive patterns.
+
+3. **Leverage Type Annotations**  
+   Use Python's type system for automatic validation of path parameters and form data.
+
+4. **Organize Routes Logically**  
+   Group related routes together and use a clear naming convention.
+
+5. **Use dataclasses for Forms**  
+   Define your data models as dataclasses for automatic form generation and validation.
+
+6. **Separate Business Logic**  
+   Keep route handlers focused on presentation, with business logic in separate modules.
+
+7. **Use Server-Rendered HTML**  
+   Embrace the server-rendered approach rather than client-side rendering for most use cases.
+
+## Common Patterns
+
+### Navigation Links
+
+```python
+Nav(
+    A("Home", href="/"),
+    A("About", href="/about"),
+    A("Contact", href="/contact"),
+    cls="navigation"
+)
+```
+
+### Data Tables
+
+```python
+Table(
+    Thead(Tr(Th("Name"), Th("Email"), Th("Actions"))),
+    Tbody(
+        [Tr(Td(user.name), Td(user.email), Td(Button("Edit"))) for user in users]
+    ),
+    cls="data-table"
+)
+```
+
+### Form Submission with HTMX
+
+```python
+Form(
+    Label("Name", Input(name="name")),
+    Label("Email", Input(name="email", type="email")),
+    Button("Submit", type="submit"),
+    **htmx(post="/api/submit", target="#result", swap="outerHTML")
+)
+```
+
+### Modal Dialogs
+
+```python
+Button("Open Modal", 
+    **htmx(get="/api/modal", target="#modal-container", swap="innerHTML")
+)
+
+Div(id="modal-container")
+```
+
+## Differences from FastAPI
+
+While FastHTML's API has some similarities to FastAPI, it's important to understand the key differences:
+
+1. **Target Use Case**  
+   FastHTML is designed for server-rendered hypermedia applications, not API services.
+
+2. **Response Format**  
+   FastHTML returns HTML (via FastTags) rather than JSON.
+
+3. **Interactive Approach**  
+   FastHTML uses HTMX for interactivity rather than client-side JavaScript frameworks.
+
+4. **HTTP Methods**  
+   FastHTML uses function names to determine HTTP methods rather than decorators.
+
+## Installation
+
+Install FastHTML using pip:
+
+```bash
+pip install python-fasthtml
+```
+
+## Dependencies and Optional Components
+
+FastHTML includes or optionally supports:
+
+- **Starlette**: Web framework foundation
+- **Uvicorn**: ASGI server
+- **HTMX**: For interactive web applications
+- **fastcore/FT**: For HTML tag generation
+- **Pico CSS** (optional): Minimal CSS framework
+- **fastlite** (optional): SQLite library
+- **Surreal** (optional): JavaScript enhancement
+- **css-scope-inline** (optional): CSS scoping
+
+## Development Environment
+
+1. **Editor Setup**  
+   Use an editor with good Python support (like VSCode with the Python extension).
+
+2. **Running the Application**  
+   Use `serve()` to run the application in development mode.
+
+3. **Debugging**  
+   Enable debug mode with `debug=True` for detailed error messages.
+
+## Resources
+
+- [Python Package](https://pypi.org/project/python-fasthtml/)
+- [HTMX Documentation](https://htmx.org/docs/)
+- [Surreal Documentation](https://github.com/gnat/surreal)
+
+## Tips and Caveats
+
+1. **Import Style**  
+   The recommended import style is `from fasthtml.common import *`, which is designed to bring in a carefully curated set of utilities.
+
+2. **JavaScript Integration**  
+   FastHTML works best with vanilla JavaScript or lightweight libraries, not with React, Vue, or Svelte.
+
+3. **Database Options**  
+   While FastHTML includes fastlite for SQLite, it also works with SQLAlchemy and other database libraries.
+
+4. **Performance Considerations**  
+   For high-traffic applications, consider adding caching mechanisms.
+
+5. **Web Components**  
+   FastHTML is compatible with JS-native web components for custom elements.
+</rule> 
