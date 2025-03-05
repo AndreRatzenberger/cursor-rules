@@ -132,41 +132,7 @@ All development with these rules follows these non-negotiable principles:
    - Documentation updated after significant code changes
    - API documentation reflects current implementation
 
-## Integrated Workflow
-
-These rules work together to create a seamless development experience:
-
-1. **Starting a Project**
-   - Create or onboard a project with `onboard project` or `setup rules`
-   - Analyze existing codebase with `analyze existing` if needed
-   - Required directory structure is automatically created
-
-2. **Planning and Specifications**
-   - Describe feature requirements to the AI
-   - Specifications automatically created in `.cursor/specs/`
-   - Specifications indexed in `.cursor/SPECS.md`
-
-3. **Task Management**
-   - Tasks automatically created from implementation requests
-   - Tasks tracked with unique IDs in `.cursor/TASKS.md`
-   - Tasks linked to relevant specifications
-
-4. **Implementation and Testing**
-   - AI implements code based on specifications
-   - Tests automatically created for new implementations
-   - Task progress tracked throughout development
-
-5. **Knowledge Management**
-   - Important insights captured as learnings
-   - Documents organized and indexed for reference
-   - Knowledge applied to future development tasks
-
-6. **Version Control**
-   - Changes automatically committed after passing tests
-   - Commit messages follow conventional format
-   - Code quality maintained through pre-commit testing
-
-7. **Documentation Management**
+6. **Documentation Management**
    - README automatically checked after test success
    - Documentation updated to reflect implemented features
    - API reference kept current with implementation
@@ -177,6 +143,8 @@ These rules work together to create a seamless development experience:
 2. Place the .mdc files in your project's `.cursor/rules/` directory
 3. Start Cursor and begin interacting with the AI
 4. The rules will automatically take effect during your conversations
+
+For a quickstart use these commands or follow the "Practical Workflow" below!
 
 For new projects, simply run:
 ```
@@ -250,6 +218,67 @@ Follow this concrete workflow to get the most out of these rules:
 
 This workflow ensures all development is specification-driven, task-organized, properly documented, and automatically committed with appropriate metadata. The integrated approach means nothing gets lost - requirements, implementation details, insights, and documentation are all preserved and linked together. You simply guide the process through conversation while Cursor AI handles the entire workflow.
 
+## Command Reference
+
+Below is a comprehensive reference of all commands available through the Cursor rules system:
+
+### Project Setup Commands
+- `onboard project` - Perform full project analysis and setup the AI-driven workflow
+- `setup rules` - Set up rule files and directory structure without analyzing the codebase
+- `analyze existing` - Generate an analysis report of your codebase without creating specifications
+
+### Specification Management Commands
+- `spec create "Title"` - Create a new specification file
+- `spec update "path/to/spec.md"` - Update an existing specification
+- `spec validate "path/to/spec.md"` - Perform comprehensive validation of a specification
+- `spec format "path/to/spec.md"` - Improve specification formatting and quality
+- `spec completeness` - Generate project-wide specification coverage report
+
+### Task Management Commands
+- `task create "Description"` - Create a new development task
+- `task start` - Mark a task as active
+- `task done` - Mark a task as complete
+- `task list` - Show all tasks with their current status
+
+### Testing Commands
+- `test run` - Execute tests for the project based on its type
+
+### Knowledge Management Commands
+- `learn add "Title" "Description" "Content"` - Create a new learning entry
+- `document add "path/to/document"` - Register a document in the knowledge base
+- `learn categorize` - Organize learnings into meaningful categories
+- `learn refine:LEARN-ID` - Create an enhanced version of a specific learning
+- `learn extract` - Identify patterns across all learnings
+- `learn metrics` - Generate knowledge capture metrics
+
+### Insight Commands
+- `insight generate` - Extract actionable insights from knowledge base
+- `insight apply:ID` - Apply a specific insight to current code context
+
+### Visualization Commands
+- `visualize specs` - Create specification relationship and progress diagrams
+- `visualize tasks` - Generate task timelines and status visualizations
+- `visualize knowledge` - Create knowledge maps and category charts
+- `visualize architecture` - Generate system architecture diagrams
+
+### Standard AI Command System
+- `Specs.getHtml` - Generate visual HTML dashboard of specifications
+- `Specs.getSummary` - Create markdown summary of specifications
+- `Specs.verify` - Verify implementations match specifications
+- `Code.analyze` - Analyze code structure and quality
+- `Code.refactor:[file]` - Generate refactoring suggestions for a file
+- `Eval.project` - Generate comprehensive project evaluation
+- `Eval.progress` - Compare current state to project goals
+- `Review.code:[file]` - Generate detailed code review
+- `Review.pr` - Create a pull request review template
+- `Task.summary` - Generate summary of all tasks
+
+### Documentation Commands
+- `readme check` - Verify README is in sync with implemented features
+- `readme update` - Update README based on implemented but undocumented features
+
+All commands are designed to integrate seamlessly with each other, forming a comprehensive development workflow. Command output is typically saved to the `.cursor/output/` directory for reference.
+
 ## Inspiration
 
 This approach was inspired by [Geoffrey Huntley's method](https://ghuntley.com/specs/) of using Cursor AI effectively. Huntley demonstrates how combining specifications with technical rules creates a powerful workflow that can dramatically increase development productivity.
@@ -257,22 +286,6 @@ This approach was inspired by [Geoffrey Huntley's method](https://ghuntley.com/s
 As Huntley explains:
 > "When you use '/specs' method with the 'stdlib' method in conjunction with a programming language that provides compiler soundness (driven by good types) and compiler errors, the results are incredible. You can drive hands-free output of N factor (entire weeks' worth) of co-workers in hours."
 
-## Future Enhancements
-
-### Automatic README Updates
-
-A promising enhancement being added to this system is a rule that automatically checks and updates the project's README file:
-- After successful unit testing
-- Before commits
-- When significant changes are made to the codebase
-
-This ensures documentation stays in sync with implementation, providing:
-- Up-to-date project information
-- Current installation instructions
-- Latest feature descriptions
-- Accurate API documentation
-
-This feature reduces the manual overhead of maintaining documentation while ensuring it accurately reflects the current state of the project.
 
 ## Something Missing?
 
