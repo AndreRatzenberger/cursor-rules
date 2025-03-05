@@ -50,6 +50,7 @@ actions:
          - Add acceptance criteria
          - Link to related specifications if applicable
       3. Update the specifications index `SPECS.md`
+      4. Trigger task creation (via development_workflow_system) after specs are created
       
       This ensures all implemented features have proper specifications 
       before development begins.
@@ -70,6 +71,7 @@ actions:
          - Acceptance criteria
          - Notes or context
       4. Update the specifications index `SPECS.md`
+      5. Capture any learnings about the specification process (via knowledge_management rule)
       
       This creates a formal specification that can be referenced during development.
 
@@ -86,6 +88,7 @@ actions:
       3. Update the completion status of requirements
       4. Refresh any related information
       5. Update the specifications index if necessary
+      6. Notify the development workflow system of changes (via development_workflow_system)
       
       This ensures specifications stay current as requirements evolve.
   
@@ -122,6 +125,8 @@ actions:
          - Suggest quality improvements
          - Highlight missing implementations
          - Recommend test additions
+      
+      5. Capture validation learnings (via knowledge_management rule)
       
       The validation report will be saved to `.cursor/output/spec_validation_[filename]_[timestamp].md`
 
@@ -175,6 +180,8 @@ actions:
          - Low-quality specifications to address
          - Missing specifications to create
       
+      5. Create a learning entry about specification completeness (via knowledge_management rule)
+      
       The completeness report will be saved to `.cursor/output/spec_completeness_[timestamp].md`
 
   - type: react
@@ -198,6 +205,8 @@ actions:
       
       3. Notify about any quality issues found
       
+      4. Update related tasks if needed (via development_workflow_system)
+      
       This ensures specifications maintain high quality and are properly indexed.
 
   - type: suggest
@@ -220,6 +229,8 @@ actions:
       - When you ask me to implement something → I'll create specs first
       - When specifications change → They're automatically validated
       - When validation issues are found → I'll suggest improvements
+      - When specs are created → Tasks are created (via development workflow)
+      - When specs are validated → Learnings are captured (via knowledge management)
 
       This integrated system ensures all development is driven by high-quality, 
       validated specifications that accurately reflect implementation requirements.
@@ -254,4 +265,4 @@ examples:
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 

@@ -58,7 +58,7 @@ actions:
       I'll create a new task with:
       - Unique task ID (TASK-YYYY-MM-DD-NN format)
       - Description section
-      - Relevant specifications section
+      - Relevant specifications section (linked to `.cursor/specs/` managed by the specification_management rule)
       - Acceptance criteria section
       - Metadata (ID, start date, end date, state)
       - Learnings section for capturing implementation insights
@@ -80,7 +80,7 @@ actions:
       - Update the task index in `.cursor/TASKS.md`
       
       If the task contains valuable learnings, they'll be saved to 
-      `.cursor/learnings/` with proper cross-references
+      `.cursor/learnings/` with proper cross-references and managed by the knowledge_management rule
 
   - type: react
     conditions:
@@ -118,7 +118,7 @@ actions:
       
       When you ask me to implement something, I'll automatically:
       - Create a new task with the implementation request as description
-      - Look for related specifications to link to the task
+      - Look for related specifications to link to the task (using the specification_management rule)
       - Set the task state to Active (🔄)
       - Add acceptance criteria
       - Create a unique task ID
@@ -196,7 +196,7 @@ actions:
          - Link to relevant code and specifications
       
       3. Store the learning for future reference:
-         - Save to `.cursor/learnings/` with proper ID
+         - Save to `.cursor/learnings/` with proper ID (managed by the knowledge_management rule)
          - Update the learnings index
       
       This captures valuable information from failures and helps prevent 
@@ -307,8 +307,8 @@ actions:
       2. If tests pass:
          - Update the task status to Done (✅)
          - Set end date to current date
-         - Extract and save any learnings
-         - Mark associated specs as completed
+         - Extract and save any learnings (via knowledge_management rule)
+         - Mark associated specs as completed (via specification_management rule)
          - Update the task index
          - Commit the changes with appropriate message
       
@@ -346,8 +346,8 @@ actions:
       - Proper scoping based on file structure
 
       **Integrated Behaviors:**
-      - Implementation request → Create specs → Create task → Create tests → Implement
-      - Implementation complete → Run tests → Update task → Commit changes
+      - Implementation request → Create specs (via specification_management) → Create task → Create tests → Implement
+      - Implementation complete → Run tests → Update task → Capture learnings (via knowledge_management) → Commit changes
       - Test failure → Analyze issues → Create learnings → Prevent completion
 
       This system ensures a consistent, high-quality development process from
@@ -382,4 +382,4 @@ examples:
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 

@@ -63,7 +63,7 @@ actions:
       - Unique ID (format: LEARN-YYYY-MM-DD-NN)
       - Title and short description
       - Detailed description of the learning
-      - Relevant code files, tasks, specifications, and documents
+      - Relevant code files, tasks (managed by development_workflow_system), specifications (managed by specification_management), and documents
       - Date of capture
       - Keywords for easy retrieval
       
@@ -81,7 +81,7 @@ actions:
       - Creating a learning entry about this document
       - Adding the document to the documents index
       - Extracting key information from the document
-      - Creating cross-references to related content
+      - Creating cross-references to related content including specifications (managed by specification_management)
       
       This ensures all project documentation is centrally tracked
       and discoverable.
@@ -95,7 +95,7 @@ actions:
       - Create a learning entry with the insight
       - Generate a unique ID for the learning
       - Categorize and tag the insight appropriately
-      - Add context and relevant connections
+      - Add context and relevant connections to tasks (managed by development_workflow_system)
       - Index the insight for future reference
       
       This ensures important information isn't lost.
@@ -111,7 +111,7 @@ actions:
       - Extract key information from the document
       - Create a learning entry linked to this document
       - Update the documents index
-      - Identify related content
+      - Identify related content including specifications (managed by specification_management)
       - Generate appropriate metadata
       
       This ensures all documentation is properly integrated into
@@ -211,7 +211,7 @@ actions:
       2. Add missing sections like short descriptions or keywords
       3. Generate keywords from content if missing
       4. Identify potentially related learnings
-      5. Add cross-references to similar knowledge assets
+      5. Add cross-references to similar knowledge assets, tasks (managed by development_workflow_system), and specifications (managed by specification_management)
       
       This automatic enhancement ensures consistent quality across all learnings.
   
@@ -231,7 +231,7 @@ actions:
       2. Identify recurring challenges and their solutions
       3. Detect patterns in successful implementations
       4. Find optimization opportunities based on performance learnings
-      5. Suggest specific, actionable recommendations
+      5. Suggest specific, actionable recommendations that can be applied to tasks (managed by development_workflow_system)
       
       Unlike general knowledge extraction, these insights will be concrete, 
       actionable recommendations that can be directly applied.
@@ -310,7 +310,8 @@ actions:
       - Just-in-time insight recommendations for changed files
 
       This integrated system ensures knowledge flows from capture through 
-      organization to practical application throughout your project.
+      organization to practical application throughout your project, working
+      seamlessly with the development workflow and specification management systems.
 
 examples:
   # Knowledge Capture Examples
@@ -343,4 +344,4 @@ examples:
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 

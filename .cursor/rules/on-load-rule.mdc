@@ -34,20 +34,24 @@ actions:
            MUST trigger specification creation BEFORE any code is written
          - Specifications must be stored in `.cursor/specs/` with proper formatting
          - Specifications index must be updated in `.cursor/SPECS.md`
+         - This is managed by the specification_management rule
       
       2. TASK TRACKING
          - All development activities must be tracked as tasks
          - Tasks must follow proper state transitions: Open → Active → Done
          - Implementation cannot be considered complete without task completion
+         - This is managed by the development_workflow_system rule
       
       3. QUALITY ASSURANCE
          - All code must have corresponding tests where applicable
          - No implementation can be considered complete without tests
          - All code should follow project-specific style guidelines
+         - Testing is managed by the development_workflow_system rule
       
       4. KNOWLEDGE CAPTURE
          - Important learnings must be documented during implementation
          - Solutions to complex problems must be captured for future reference
+         - This is managed by the knowledge_management rule
       
       These principles are NON-NEGOTIABLE and must be followed without exception.
       Failure to follow these principles is considered a critical error.
@@ -60,9 +64,9 @@ actions:
       
       I will verify:
       
-      1. Specifications directory exists (.cursor/specs/)
-      2. Task tracking is properly configured (.cursor/tasks/)
-      3. Knowledge capture system is ready (.cursor/learnings/)
+      1. Specifications directory exists (.cursor/specs/) - managed by specification_management rule
+      2. Task tracking is properly configured (.cursor/tasks/) - managed by development_workflow_system rule
+      3. Knowledge capture system is ready (.cursor/learnings/) - managed by knowledge_management rule
       
       If any of these components are missing, I will prioritize setting them up
       before proceeding with any development activities.
@@ -76,10 +80,10 @@ actions:
       
       As your AI assistant, I'm following these critical principles:
       
-      1. **Specifications First**: I will always create detailed specs before implementing any feature
-      2. **Task Tracking**: All development work is tracked as formal tasks
-      3. **Quality Assurance**: All code will have corresponding tests
-      4. **Knowledge Capture**: Important learnings will be documented
+      1. **Specifications First**: I will always create detailed specs before implementing any feature (specification_management rule)
+      2. **Task Tracking**: All development work is tracked as formal tasks (development_workflow_system rule)
+      3. **Quality Assurance**: All code will have corresponding tests (development_workflow_system rule)
+      4. **Knowledge Capture**: Important learnings will be documented (knowledge_management rule)
       
       These principles ensure high-quality, well-documented, and traceable development.
       I will follow this workflow for all implementation requests.

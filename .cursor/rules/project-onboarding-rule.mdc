@@ -32,10 +32,10 @@ actions:
       I'll perform a complete project onboarding by:
       
       1. Creating the required directory structure:
-         - `.cursor/specs/` - Requirements and specifications
-         - `.cursor/tasks/` - Task tracking
-         - `.cursor/learnings/` - Knowledge capture
-         - `.cursor/docs/` - Documentation
+         - `.cursor/specs/` - Requirements and specifications (managed by specification_management rule)
+         - `.cursor/tasks/` - Task tracking (managed by development_workflow_system rule)
+         - `.cursor/learnings/` - Knowledge capture (managed by knowledge_management rule)
+         - `.cursor/docs/` - Documentation (managed by knowledge_management rule)
          - `.cursor/rules/` - Cursor rule files
          - `.cursor/output/` - Generated reports
       
@@ -105,9 +105,9 @@ actions:
          - Documentation types
       
       6. Providing integration recommendations:
-         - Suggestions for specification creation
-         - Test coverage improvements
-         - Documentation enhancements
+         - Suggestions for specification creation (via specification_management rule)
+         - Test coverage improvements (via development_workflow_system rule)
+         - Documentation enhancements (via knowledge_management rule)
       
       The analysis report will be saved to `.cursor/output/codebase_analysis_[timestamp].md`
 
@@ -121,15 +121,13 @@ actions:
       
       1. Creating the rules directory `.cursor/rules/`
       2. Setting up the following rule files:
-         - `development-rule.mdc` - Task tracking and management
-         - `git-commit-rule.mdc` - Conventional commits automation
-         - `information-tracking-rule.mdc` - Knowledge management
+         - `development-workflow-rule.mdc` - Task tracking, testing, and version control
+         - `specification-management-rule.mdc` - Specification creation and validation
+         - `knowledge-management-rule.mdc` - Knowledge capture and application
          - `location-rule.mdc` - Rules for organizing rule files
-         - `request-specs-rule.mdc` - Automatic spec file creation
-         - `spec-validation-rule.mdc` - Specification validation
-         - `learning-refinement-rule.mdc` - Knowledge organization
          - `command-rules.mdc` - AI command system
          - `project-onboarding-rule.mdc` - Project onboarding
+         - `on-load-rule.mdc` - Critical development principles
       3. Creating required directory structure
       
       This provides the foundation for AI-driven development without
@@ -195,4 +193,4 @@ examples:
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 
