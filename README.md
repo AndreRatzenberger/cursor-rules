@@ -1,4 +1,4 @@
-# Cursor Rules Rules
+# Cursor Rules Rule
 
 > ⚠️ **Important**: If you're using Cursor without rules, you're doing it wrong!
 
