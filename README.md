@@ -321,7 +321,7 @@ This meta-capability - using Cursor to extend Cursor - demonstrates the true pow
 
 ## "But Other AI Tools Also Have Rules!"
 
-Yes, I'm aware that tools and IDEs like GitHub Copilot, Claude, and similar AI assistants offer various forms of rules or custom instructions. However, after extensive testing of these alternatives, Cursor stands apart by enabling a rule system sophisticated enough to transform it into a proper agent.
+Yes, I'm aware that tools and IDEs like GitHub Copilot, Windsurf, Cline, and similar AI assistants offer various forms of rules or custom instructions. However, after extensive testing of these alternatives, Cursor stands apart by enabling a rule system sophisticated enough to transform it into a proper agent.
 
 For example, Copilot and similar tools are inherently constrained by the VS Code extension sandbox and are limited by design in what they can accomplish. These limitations prevent the creation of truly comprehensive development workflows.
 
