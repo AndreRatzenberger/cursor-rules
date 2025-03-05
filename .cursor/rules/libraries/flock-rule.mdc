@@ -1,0 +1,402 @@
+---
+description: Rule for working with the Flock framework for declarative LLM-powered agent orchestration.
+globs: 
+alwaysApply: false
+---
+# Flock Framework
+
+Rule for working with the Flock framework for declarative LLM-powered agent orchestration.
+
+<rule>
+name: flock_framework
+filters:
+  - type: file_change
+    pattern: "src/flock/**/*.py"
+  - type: file_change
+    pattern: "examples/**/*.py"
+  - type: command
+    pattern: "flock"
+
+actions:
+  - type: suggest
+    message: |
+      ### Flock Framework
+
+      I see you're working with the Flock framework! I can help with developing, debugging, or extending your agent-based applications.
+
+      **Key capabilities I can assist with:**
+      
+      - Creating and configuring new agents
+      - Setting up agent chains and hand-offs
+      - Integrating tools and external capabilities
+      - Implementing complex workflows with Temporal
+      - Customizing agent behavior through modules and evaluators
+      - Testing and debugging your agent applications
+
+      Let me know what you're trying to accomplish, and I'll provide guidance based on Flock's declarative approach to agent orchestration.
+
+metadata:
+  priority: high
+  version: 1.0
+  author: "AI Assistant"
+  description: "Comprehensive guide for working with the Flock framework for declarative LLM-powered agent orchestration"
+  
+# Flock: Declarative LLM-Powered Agent Orchestration
+
+## Overview
+
+Flock is a powerful framework for orchestrating LLM-powered agents using a declarative approach. Instead of writing lengthy, brittle prompts, you simply specify what each agent needs as input and what it produces as output. Under the hood, Flock transforms these declarations into robust workflows, leveraging cutting-edge components such as Temporal and DSPy for fault tolerance, state management, and error recovery.
+
+## Key Innovations
+
+1. **Declarative Agent System**  
+   Define agents by declaring their input/output interfaces (with type hints and human-readable descriptions) using a concise syntax. The framework automatically extracts type and description details, builds precise prompts, and configures the underlying LLM.
+
+2. **Type Safety and Clear Contracts**  
+   Agents are implemented as Pydantic models, providing automatic JSON serialization/deserialization, strong typing, and explicit contracts for inputs and outputs. This makes testing, validation, and integration straightforward.
+
+3. **Unparalleled Flexibility**  
+   Each agent supports lifecycle hooks such as `initialize()`, `terminate()`, `evaluate()`, and `on_error()`. This ensures agents can perform setup, cleanup, and error handling without cluttering the main business logic. Almost every property of an agent can be set to a callable, enabling highly dynamic behavior.
+
+4. **Fault Tolerance & Temporal Integration**  
+   Built with production readiness in mind, Flock integrates with Temporal to provide automatic retries, durable state management, and resilience against failures. This ensures that a single agent crash won't bring down your entire system.
+
+## Core Architecture
+
+### Key Components
+
+1. **Flock**  
+   The main orchestrator that manages agents, tools, and workflows. It provides an easy-to-use API for both local (debug) and production (Temporal) execution.
+
+2. **FlockAgent**  
+   The base class for all agents, defining their inputs, outputs, and behavior. It supports lifecycle hooks and can be extended with modules for additional functionality.
+
+3. **Registry**  
+   Manages the registration of agents and tools, providing methods for registering and retrieving them.
+
+4. **Context**  
+   Maintains the global execution state, storing variables that are accessible to all agents.
+
+5. **Executor**  
+   Runs agent workflows either locally (for development and testing) or via Temporal (for production-grade execution).
+
+6. **Modules**  
+   Pluggable components that can hook into agent lifecycle events, such as the Memory Module for persistent memory or the Metrics Module for collecting execution metrics.
+
+7. **Tools**  
+   Functions that agents can use to perform specific tasks, such as web search, code evaluation, or math evaluation.
+
+8. **Routers**  
+   Determine the next agent in a workflow, supporting different routing strategies such as default (predefined), LLM-based, or agent-based.
+
+## Usage Patterns
+
+### Basic Usage
+
+```python
+from flock.core import Flock, FlockAgent
+
+# Create a Flock instance
+flock = Flock(model="openai/gpt-4o")
+
+# Define an agent
+bloggy = FlockAgent(
+    name="bloggy", 
+    input="blog_idea", 
+    output="funny_blog_title, blog_headers"
+)
+
+# Add the agent to the flock
+flock.add_agent(bloggy)
+
+# Run the agent
+result = flock.run(
+    start_agent=bloggy, 
+    input={"blog_idea": "A blog about cats"}
+)
+```
+
+### Type Hints
+
+```python
+# With type hints
+bloggy = FlockAgent(
+    name="bloggy", 
+    input="blog_idea", 
+    output="funny_blog_title, blog_headers: list[str]"
+)
+```
+
+### Pydantic Models
+
+```python
+from pydantic import BaseModel, Field
+
+class BlogSection(BaseModel):
+    header: str
+    content: str
+
+class MyBlog(BaseModel):
+    funny_blog_title: str = Field(description="The funny blog title in all caps")
+    blog_sections: list[BlogSection]
+
+# Using a Pydantic model for output
+bloggy = FlockAgent(
+    name="bloggy", 
+    input="blog_idea", 
+    output="blog: MyBlog",
+)
+```
+
+### Agent Chaining
+
+```python
+# First agent generates titles and headers
+bloggy = FlockAgent(
+    name="bloggy",
+    input="blog_idea: str|The topic to blog about",
+    output=(
+        "funny_blog_title: str|A catchy title for the blog, "
+        "blog_headers: list[str]|List of section headers for the blog"
+    )
+)
+
+# Second agent expands headers into content
+content_writer = FlockAgent(
+    name="content_writer",
+    input=(
+        "funny_blog_title: str|The blog title to work with, "
+        "blog_headers: list[str]|The headers to expand into content"
+    ),
+    output="blog_sections: list[BlogSection]|The fully written blog sections"
+)
+
+# Set up handoff
+bloggy.hand_off = content_writer
+
+# Add agents to the flock
+flock.add_agent(bloggy)
+flock.add_agent(content_writer)
+
+# Run the workflow
+result = flock.run(
+    input={"blog_idea": "A blog about cats"},
+    start_agent=bloggy
+)
+```
+
+### Using Tools
+
+```python
+from flock.core.tools import basic_tools
+
+# Agent with tools
+bloggy = FlockAgent(
+    name="bloggy",
+    input="blog_idea: str|The topic to blog about",
+    output=(
+        "funny_blog_title: str|A catchy title for the blog, "
+        "blog_headers: list[str]|List of section headers for the blog"
+        "analysis_results: dict[str,Any] | Result of calculated analysis if necessary"
+    ),
+    tools=[basic_tools.web_search_duckduckgo, basic_tools.code_eval],
+)
+```
+
+## Available Tools
+
+Flock provides several built-in tools (requires `flock-core[tools]`):
+
+- `web_search_tavily` - Search the web using Tavily
+- `web_search_duckduckgo` - Search the web using DuckDuckGo
+- `get_web_content_as_markdown` - Get web content as markdown
+- `get_anything_as_markdown` - Uses docling (requires `flock-core[all-tools]`)
+- `evaluate_math` - Evaluate mathematical expressions
+- `code_eval` - Evaluate Python code
+- `get_current_time` - Get the current time
+- `count_words` - Count words in a text
+- `extract_urls` - Extract URLs from text
+- `extract_numbers` - Extract numbers from text
+- `json_parse_safe` - Safely parse JSON
+- `save_to_file` - Save content to a file
+- `read_from_file` - Read content from a file
+
+## Advanced Features
+
+### Temporal Workflow Integration
+
+Flock supports execution on Temporal, ensuring robust, fault-tolerant workflows:
+
+- **Durability:** Persistent state management even during failures
+- **Retries & Error Handling:** Automatic recovery via Temporal's mechanisms
+- **Scalability:** Seamless orchestration of distributed agent workflows
+
+### Custom Routers
+
+Flock supports different routing strategies:
+
+```python
+# Default router - hand off to a specific agent
+agent.handoff_router = DefaultRouter(config=DefaultRouterConfig(hand_off=next_agent.name))
+
+# LLM router - hand off based on LLM's decision
+agent.handoff_router = LLMRouter(config=LLMRouterConfig(with_output=True))
+
+# Agent router - dedicated agent makes routing decisions
+agent.handoff_router = AgentRouter(config=AgentRouterConfig())
+```
+
+### Modules
+
+Modules allow extending agent functionality:
+
+```python
+# Add memory module to an agent
+memory_module = MemoryModule()
+agent.add_module(memory_module)
+
+# Add metrics module to an agent
+metrics_module = MetricsModule()
+agent.add_module(metrics_module)
+```
+
+### API Server
+
+Flock includes a REST API server:
+
+```python
+# Start API server
+flock.start_api(host="0.0.0.0", port=8344)
+```
+
+## Best Practices
+
+1. **Declarative Approach**  
+   Focus on what agents need as input and what they produce as output rather than writing complex prompts.
+
+2. **Clear Input/Output Definitions**  
+   Use type hints and descriptions to clearly define agent interfaces.
+
+3. **Modular Design**  
+   Break down complex workflows into smaller, focused agents.
+
+4. **Error Handling**  
+   Implement custom `on_error` handlers for agents to gracefully handle failures.
+
+5. **Testing**  
+   Take advantage of the declarative approach to easily test agents with various inputs.
+
+6. **Caching**  
+   Use the `use_cache` property to avoid redundant LLM calls during development.
+
+7. **Tool Integration**  
+   Leverage Flock's tool system to extend agent capabilities instead of trying to solve everything with the LLM.
+
+8. **Lifecycle Management**  
+   Use lifecycle hooks (`initialize()`, `terminate()`) for proper setup and cleanup.
+
+## Common Pitfalls
+
+1. **Complex Prompting**  
+   Avoid falling back to complex prompting; let Flock handle the prompt generation.
+
+2. **Skipping Type Hints**  
+   Always use type hints for complex data structures to ensure proper deserialization.
+
+3. **Overlooking Error Handling**  
+   Implement custom error handlers to gracefully handle failures.
+
+4. **Missing Handoffs**  
+   Ensure proper agent handoffs are configured for multi-agent workflows.
+
+5. **Tool Overreliance**  
+   Choose appropriate tools for the task; not everything needs a tool.
+
+## Setup and Installation
+
+### Basic Installation
+
+```bash
+pip install flock-core
+```
+
+### With Tools Support
+
+```bash
+pip install flock-core[tools]
+```
+
+### With All Tools (including Docling)
+
+```bash
+pip install flock-core[all-tools]
+```
+
+### Configuration
+
+Flock uses environment variables for configuration. You can set them in a `.env` file or export them directly:
+
+```bash
+export OPENAI_API_KEY=sk-proj-...
+export TAVILY_API_KEY=tvly-...
+```
+
+For LLM interaction, Flock uses LiteLLM. Refer to [LiteLLM documentation](mdc:https:/docs.litellm.ai/docs/providers) for using other models and providers.
+
+## Development Environment
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/whiteducksoftware/flock
+   cd flock
+   ```
+
+2. **Create a Virtual Environment and Sync Packages**
+
+   ```bash
+   uv sync --all-groups --all-extras
+   ```
+
+3. **Install Local Version of Flock**
+
+   ```bash
+   uv build && uv pip install -e .
+   ```
+
+4. **Install Jaeger for Telemetry (Optional)**
+
+   ```bash
+   docker run -d --name jaeger \
+     -e COLLECTOR_ZIPKIN_HTTP_PORT=9411 \
+     -p 5775:5775/udp \
+     -p 6831:6831/udp \
+     -p 6832:6832/udp \
+     -p 5778:5778 \
+     -p 16686:16686 \
+     -p 14268:14268 \
+     -p 14250:14250 \
+     -p 9411:9411 \
+     jaegertracing/all-in-one:1.41
+   ```
+
+5. **Create Your .env**
+
+   Use `.env_template` as a template for your custom configuration variables.
+
+## Resources
+
+- [GitHub Repository](mdc:https:/github.com/whiteducksoftware/flock)
+- [Documentation](mdc:https:/whiteducksoftware.github.io/flock)
+- [Examples](mdc:https:/github.com/whiteducksoftware/flock/tree/master/examples)
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- Built with [DSPy](mdc:https:/github.com/stanfordnlp/dspy)
+- Uses [Temporal](mdc:https:/temporal.io) for workflow management
+- Integrates with [Tavily](mdc:https:/tavily.com) for web search capabilities
+</rule>
