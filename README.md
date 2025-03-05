@@ -281,7 +281,7 @@ All commands are designed to integrate seamlessly with each other, forming a com
 
 ## Inspiration
 
-This approach was inspired by [Geoffrey Huntley's method](https://ghuntley.com/specs/) of using Cursor AI effectively. Huntley demonstrates how combining specifications with technical rules creates a powerful workflow that can dramatically increase development productivity.
+A similar structured AI dev flow was previously implemented as a real agent system using [Flock](https://github.com/whiteducksoftware/flock) until this approach by [Geoffrey Huntley's method](https://ghuntley.com/specs/) of using Cursor AI effectively made me migrate it to Cursor and it's amazing! Huntley demonstrates how combining specifications with technical rules creates a powerful workflow that can dramatically increase development productivity.
 
 As Huntley explains:
 > "When you use '/specs' method with the 'stdlib' method in conjunction with a programming language that provides compiler soundness (driven by good types) and compiler errors, the results are incredible. You can drive hands-free output of N factor (entire weeks' worth) of co-workers in hours."
