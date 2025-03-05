@@ -21,8 +21,6 @@ This approach fundamentally changes the developer's role from manual coding to:
 
 Cursor, with properly configured rules, is the first practical implementation of this new development model. The rules in this repository aren't just for code formatting or style, they establish a complete development workflow that manages everything from specifications to tasks, knowledge capture, and code commits.
 
-[Yes I'm aware that tools and IDEs like windsurf, Cline and so on also offer rules, but I tried them all, and Cursor is the only one which let's you build a rule system complex enough that it transforms cursor into a proper agent. Feel free to correct me if I'm wrong!]
-
 By adopting this rules-based approach, development teams can dramatically accelerate productivity while maintaining quality control. The journey toward AI-augmented development is already here. **And the best part? You can already begin this journey with Cursor today!**
 
 ## What are Cursor Rules?
@@ -307,6 +305,22 @@ This meta-capability - using Cursor to extend Cursor - demonstrates the true pow
 ## Contributing
 
 Feel free to contribute your own rules or improvements to existing ones via pull requests.
+
+## "But Other AI Tools Also Have Rules!"
+
+Yes, I'm aware that tools and IDEs like GitHub Copilot, Claude, and similar AI assistants offer various forms of rules or custom instructions. However, after extensive testing of these alternatives, Cursor stands apart by enabling a rule system sophisticated enough to transform it into a proper agent.
+
+For example, Copilot and similar tools are inherently constrained by the VS Code extension sandbox and are limited by design in what they can accomplish. These limitations prevent the creation of truly comprehensive development workflows.
+
+What makes Cursor uniquely powerful is its ability to:
+- Trigger any rule based on any event
+- Execute any action in response
+- Create complex, interconnected rule systems
+- Operate without arbitrary sandbox limitations
+
+This unbounded set of possibilities transforms Cursor from a mere coding assistant into an AI development partner that can manage entire workflows from specifications to implementation to documentation.
+
+Feel free to share your experiences if you've found similar capabilities in other tools!
 
 ## License
 
