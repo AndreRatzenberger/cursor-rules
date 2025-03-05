@@ -319,10 +319,6 @@ One of the most powerful aspects of Cursor is its ability to extend itself! You 
 
 This meta-capability - using Cursor to extend Cursor - demonstrates the true power of rule-based AI assistance. You're not limited to the rules in this repository; you can create a completely customized workflow tailored to your project's needs.
 
-## Contributing
-
-Feel free to contribute your own rules or improvements to existing ones via pull requests.
-
 ## "But Other AI Tools Also Have Rules!"
 
 Yes, I'm aware that tools and IDEs like GitHub Copilot, Claude, and similar AI assistants offer various forms of rules or custom instructions. However, after extensive testing of these alternatives, Cursor stands apart by enabling a rule system sophisticated enough to transform it into a proper agent.
