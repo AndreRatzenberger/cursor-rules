@@ -43,6 +43,12 @@ filters:
     pattern: "file_save"
   - type: file_change
     pattern: "*"
+  
+  # README management filters
+  - type: command
+    pattern: "readme"
+  - type: file_change
+    pattern: "README.md"
 
 actions:
   #
@@ -176,7 +182,13 @@ actions:
       3. Update task acceptance criteria:
          - Mark "Unit tests pass" criteria based on results
       
-      This validates implementation quality through automated testing.
+      4. If tests pass, check if README needs updating:
+         - Analyze significant code changes
+         - Compare with current README content
+         - Suggest README updates if needed
+      
+      This validates implementation quality through automated testing and keeps
+      documentation in sync with implementation.
 
   - type: react
     event: "test_failure"
@@ -224,7 +236,14 @@ actions:
          - Create a reminder to add tests
          - Track untested components
       
-      This ensures all components have corresponding test coverage.
+      4. Track if the change is significant for README updates:
+         - New public API or feature
+         - Changed behavior of existing features
+         - Removed functionality
+         - New configuration options
+      
+      This ensures all components have corresponding test coverage and 
+      tracks changes that might require documentation updates.
   
   #
   # SECTION 3: VERSION CONTROL
@@ -261,7 +280,8 @@ actions:
       After a successful build, I'll:
       1. Add all changed files to git staging
       2. Create an appropriate conventional commit message
-      3. Commit the changes
+      3. Check if README needs updating based on the changes
+      4. Commit the changes
       
       This ensures all successful builds are properly committed
 
@@ -273,9 +293,14 @@ actions:
       After successful tests, I'll:
       1. Add all changed files to git staging
       2. Create a conventional commit message, usually with `test` or `fix` type
-      3. Commit the changes
+      3. Check if README needs updating based on recent changes:
+         - Analyze if implemented features are documented in README
+         - Compare with README content
+         - Flag if README is missing information about new features
+      4. Commit the changes
       
-      This ensures test-verified changes are committed
+      This ensures test-verified changes are committed and documentation
+      stays in sync with implementation.
 
   - type: react
     event: "test_failure"
@@ -290,7 +315,53 @@ actions:
       This prevents committing code that doesn't pass tests
   
   #
-  # SECTION 4: WORKFLOW INTEGRATION
+  # SECTION 4: README MANAGEMENT
+  #
+  
+  - type: react
+    conditions:
+      - pattern: "readme check|check readme"
+    action: |
+      # Check if README needs updating
+      
+      I'll analyze the README file and codebase to identify documentation gaps:
+      
+      1. Compare README content with actual project features:
+         - Look for implemented features not described in README
+         - Check if API documentation matches current implementation
+         - Verify installation instructions are correct
+         - Ensure usage examples reflect current behavior
+      
+      2. Generate a README validation report:
+         - List missing or outdated sections
+         - Provide specific update recommendations
+         - Prioritize documentation gaps by importance
+      
+      This helps keep documentation in sync with implementation.
+
+  - type: react
+    conditions:
+      - pattern: "readme update|update readme"
+    action: |
+      # Update README to reflect current project state
+      
+      I'll update the README file to match the current state of the project:
+      
+      1. Preserve existing structure while adding/updating content:
+         - Add missing feature descriptions
+         - Update outdated API documentation
+         - Refresh installation instructions if needed
+         - Update usage examples for changed functionality
+      
+      2. Generate a commit for the README changes:
+         - Use commit type `docs`
+         - Include scope `readme`
+         - Provide descriptive message about updates
+      
+      This ensures documentation accurately reflects the current implementation.
+  
+  #
+  # SECTION 5: WORKFLOW INTEGRATION
   #
   
   - type: react
@@ -310,6 +381,7 @@ actions:
          - Extract and save any learnings (via knowledge_management rule)
          - Mark associated specs as completed (via specification_management rule)
          - Update the task index
+         - Check if README needs updating based on implemented features
          - Commit the changes with appropriate message
       
       3. If tests fail:
@@ -318,7 +390,7 @@ actions:
          - Do not commit the changes
       
       This ensures only properly tested implementations are marked complete
-      and committed to version control.
+      and committed to version control with up-to-date documentation.
 
   - type: suggest
     message: |
@@ -345,13 +417,20 @@ actions:
       - Appropriate commit types based on change type
       - Proper scoping based on file structure
 
+      **README Management:**
+      - `readme check` - Validate README against current project state
+      - `readme update` - Update README to reflect implemented features
+      - Automatic README validation after successful tests
+      - Documentation kept in sync with implementation
+
       **Integrated Behaviors:**
-      - Implementation request → Create specs (via specification_management) → Create task → Create tests → Implement
-      - Implementation complete → Run tests → Update task → Capture learnings (via knowledge_management) → Commit changes
+      - Implementation request → Create specs → Create task → Create tests → Implement
+      - Implementation complete → Run tests → Update task → Check README → Capture learnings → Commit changes
       - Test failure → Analyze issues → Create learnings → Prevent completion
 
       This system ensures a consistent, high-quality development process from
-      task creation through testing to version control.
+      task creation through testing to version control, with documentation
+      that stays in sync with your codebase.
 
 examples:
   # Task Management Examples
@@ -374,10 +453,15 @@ examples:
       feat(auth): add user authentication function
     output: "Changes committed with message: feat(auth): add user authentication function"
 
+  # README Management Examples
+  - input: |
+      readme check
+    output: "README validation complete. Found 2 sections that need updating to reflect recent changes."
+
   # Integrated Workflow Examples
   - input: |
       Implementation complete for user authentication
-    output: "Running verification tests... ✅ Implementation verified by tests. Task marked as complete and changes committed."
+    output: "Running verification tests... ✅ Implementation verified by tests. README update suggested for new auth feature. Task marked as complete and changes committed."
 
 metadata:
   priority: high
